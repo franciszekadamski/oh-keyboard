@@ -1,3 +1,6 @@
+// Copyright 2026 Franciszek Adamski
+// SPDX-License-Identifier: GPL-3.0-or-later
+
 #define B_1_1 KC_LEFT_ALT
 #define B_1_2 KC_Q
 #define B_1_3 KC_K

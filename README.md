@@ -48,3 +48,10 @@ You will find the learning resources in the `latex_docs` directory.
 It takes some time to learn the combos and get used to One Handed Keyboard.
 It is fun though and it lets you eat pizza with the other hand while you type.
 
+# Credits & Acknowledgments
+
+QMK Firmware - The powerhouse firmware driving this keyboard.
+
+Artsey.io - This project's logical structure and layout are heavily inspired by and based on the Artsey project.
+
+Original Artsey code by Greg Leo.

@@ -1,3 +1,6 @@
+// Copyright 2026 Franciszek Adamski
+// SPDX-License-Identifier: GPL-3.0-or-later
+
 enum combo_events{
     OH_W,
     OH_F,
