@@ -50,8 +50,8 @@ It is fun though and it lets you eat pizza with the other hand while you type.
 
 # Credits & Acknowledgments
 
-QMK Firmware - The powerhouse firmware driving this keyboard.
+[QMK Firmware](https://qmk.fm/) - The powerhouse firmware driving this keyboard.
 
-Artsey.io - This project's logical structure and layout are heavily inspired by and based on the Artsey project.
+[Artsey.io](https://artsey.io/) - This project's logical structure and layout are heavily inspired by and based on the Artsey project.
 
-Original Artsey code by Greg Leo.
+Original Artsey code by [Greg Leo](https://gregcleo.com/).
