@@ -44,7 +44,7 @@ You will find pin-key mapping in `PIN_KEY_MAPPING.md` file.
 
 ## Enjoy your keyboard
 
-You will find the learning resources in the `latex_docs` directory.
+You will find the learning resources in the `docs` directory.
 It takes some time to learn the combos and get used to One Handed Keyboard.
 It is fun though and it lets you eat pizza with the other hand while you type.
 
