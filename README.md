@@ -22,6 +22,8 @@ qmk compile -kb handwired/oh-keyboard-qmk -km default
 
 `$HOME/qmk_firmware/handwired_oh-keyboard-qmk.uf2` file should appear.
 
+Primarily OH Keyboard was builld for Raspberry Pi Pico and that's the default platform. Edit the files according to your needs.
+
 ## Upload the uf2 file
 
 Upload the uf2 file to your board. For Raspberry Pi Pico I usually use `picotool`:
