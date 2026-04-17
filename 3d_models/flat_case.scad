@@ -6,7 +6,7 @@ number_of_columns = 5;
 
 keyboard_width = hole_distance + (hole_cube_width + hole_distance)*number_of_columns;
 keyboard_depth = hole_distance + (hole_cube_width + hole_distance)*number_of_rows;
-keyboard_height = 10;
+keyboard_height = 12;
 
 chip_width = 23;
 chip_depth = 51;
@@ -15,6 +15,16 @@ chip_shell_depth = chip_depth + hole_distance;
 chip_shell_height = keyboard_height;
 
 battery_shell_depth = keyboard_height;
+
+screw_hole_radius = 1.2;
+nut_hole_radius = 2.3;
+nut_hole_mesh_radius = 4;
+screw_center_locations = [
+    [nut_hole_mesh_radius, nut_hole_mesh_radius, 0],
+    [keyboard_width+chip_shell_width-nut_hole_mesh_radius, nut_hole_mesh_radius, 0],
+    [nut_hole_mesh_radius, keyboard_depth+battery_shell_depth+nut_hole_mesh_radius-(hole_distance/2), 0],
+    [keyboard_width+chip_shell_width-nut_hole_mesh_radius, keyboard_depth+battery_shell_depth+nut_hole_mesh_radius-(hole_distance/2), 0]
+];
 
 // keyboard part
 module holes_row(row, start, end) {
@@ -97,26 +107,57 @@ module battery_shell() {
     };
 };
 
+module screw_hole_meshes() {
+    for (screw_center=screw_center_locations) {
+        translate(screw_center) {
+            cylinder(h=4, r=nut_hole_mesh_radius, $fn=6);
+        };
+    };
+};
+
 module chip_keyboard_and_battery_shell() {
     union() {
         keyboard_shell();
         chip_shell();
         battery_shell();
+        screw_hole_meshes();
     };
 };
+
 // gpio socket
 // screw holes
+module screw_holes() {
+    for (screw_center=screw_center_locations) {
+        translate(screw_center) {
+            translate([0, 0, -1]) {
+                cylinder(h=3, r=nut_hole_radius, $fn=6);
+            };
+        };
+    };
+    for (screw_center=screw_center_locations) {
+        translate(screw_center) {
+            translate([0, 0, -1]) {
+                cylinder(h=6, r=screw_hole_radius, $fn=50);
+            };
+        };
+    };
+
+};
+
 // bottom with wiring
 
 
 // main
 module keyboard() {
     difference() {
-        chip_and_keyboard_shells();
-        chip_and_keyboard_connection_hole();
+        difference() {
+            chip_keyboard_and_battery_shell();
+            chip_and_keyboard_connection_hole();
+        };
+        screw_holes();
     };
 };
 
-translate([(-keyboard_width/2), 0, 0]) {
-    chip_keyboard_and_battery_shell();
+translate([0, 0, 0]) {
+    keyboard();
 };
