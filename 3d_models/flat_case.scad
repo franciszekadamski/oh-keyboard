@@ -6,7 +6,7 @@ number_of_columns = 5;
 
 keyboard_width = hole_distance + (hole_cube_width + hole_distance)*number_of_columns;
 keyboard_depth = hole_distance + (hole_cube_width + hole_distance)*number_of_rows;
-keyboard_height = 12;
+keyboard_height = 13;
 
 chip_width = 23;
 chip_depth = 51;
@@ -158,6 +158,41 @@ module keyboard() {
     };
 };
 
-translate([0, 0, 0]) {
-    keyboard();
+module top_text() {
+    translate([hole_distance, keyboard_depth+hole_distance, keyboard_height-2]) {
+        linear_extrude(2.1) {
+            text("岁月静好", size=12, font="AR PL UKai CN:style=Book");
+        };
+    };
 };
+
+module vertical_text() {
+    rotate([90, 0, 180]) {
+        translate([-keyboard_width-chip_shell_width+hole_distance, hole_distance, keyboard_depth+17]) {
+            linear_extrude(2.1) {
+                text("OH Keyboard", size=7, font="AR PL UKai CN:style=Book");
+            };
+        };
+        translate([-keyboard_width+37, hole_distance, keyboard_depth+17]) {
+            linear_extrude(2.1) {
+                text("by Franciszek Adamski", size=3, font="AR PL UKai CN:style=Book");
+            };
+        };
+    };
+    
+};
+
+module keyboard_with_text() {
+    difference() {
+        keyboard();
+        union() {
+            top_text();
+            vertical_text();
+        };
+    };
+};
+translate([0, 0, 0]) {
+    keyboard_with_text();
+};
+
+vertical_text();
