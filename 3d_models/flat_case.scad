@@ -145,9 +145,27 @@ module screw_holes() {
 };
 
 // bottom with wiring
+module bottom_lid() {
+    cube(
+        [
+            keyboard_width+chip_shell_width,
+            keyboard_depth+battery_shell_depth+2*hole_distance,
+            2
+        ]
+    );
+};
+
+module bottom_lid_with_screw_holes() {
+    difference() {
+        bottom_lid();
+        translate([0, 0, -1]) screw_holes();
+    };
+};
+
+translate([0, 0, -20]) bottom_lid_with_screw_holes();
 
 
-// main
+// keyboard top shell
 module keyboard() {
     difference() {
         difference() {
@@ -159,7 +177,7 @@ module keyboard() {
 };
 
 module top_text() {
-    translate([hole_distance, keyboard_depth+hole_distance, keyboard_height-2]) {
+    translate([hole_distance, keyboard_depth+hole_distance, keyboard_height-1]) {
         linear_extrude(2.1) {
             text("岁月静好", size=12, font="AR PL UKai CN:style=Book");
         };
