@@ -134,7 +134,10 @@ module screw_hole_meshes() {
 module chip_keyboard_and_battery_shell() {
     union() {
         keyboard_shell();
-        chip_shell();
+        difference() {
+            chip_shell();
+            battery_shell_hole();
+        };
         battery_shell();
         screw_hole_meshes();
     };
