@@ -19,12 +19,28 @@ battery_shell_depth = keyboard_height;
 screw_hole_radius = 1.2;
 nut_hole_radius = 2.3;
 nut_hole_mesh_radius = 4;
+
 screw_center_locations = [
     [nut_hole_mesh_radius, nut_hole_mesh_radius, 0],
     [keyboard_width+chip_shell_width-nut_hole_mesh_radius, nut_hole_mesh_radius, 0],
     [nut_hole_mesh_radius, keyboard_depth+battery_shell_depth+nut_hole_mesh_radius-(hole_distance/2), 0],
     [keyboard_width+chip_shell_width-nut_hole_mesh_radius, keyboard_depth+battery_shell_depth+nut_hole_mesh_radius-(hole_distance/2), 0]
 ];
+
+metal_pin_locations = [
+    [3.2, 9.5, 0],
+    [9.5, 12.1, 0]
+];
+metal_pin_radius = 0.8;
+
+plastic_pin_locations = [
+    [1.9, 7, 0],
+    [12.1, 7, 0]
+];
+plastic_pin_radius = 0.9;
+
+central_pin_location = [7, 7, 0];
+central_pin_radius = 2.05;
 
 // keyboard part
 module holes_row(row, start, end) {
@@ -64,7 +80,7 @@ module body_mesh_cutout() {
 module keyboard_shell() {
     difference() {
         body_mesh_cutout();
-        translate([hole_distance, hole_distance, -1]) cube([keyboard_width-(2*hole_distance), keyboard_depth-(1*hole_distance), keyboard_height-2]);
+        translate([hole_distance, hole_distance, -1]) cube([keyboard_width-(2*hole_distance), keyboard_depth-(1*hole_distance), keyboard_height-1]);
     }
 };
 
@@ -162,7 +178,50 @@ module bottom_lid_with_screw_holes() {
     };
 };
 
-translate([0, 0, -20]) bottom_lid_with_screw_holes();
+module key_holders_row(row, start, end) {
+    hole_positions = [
+        for (x=[start:(number_of_columns-1-end)]) [
+            x*hole_cube_width + x*hole_distance,
+            (row * (hole_distance + hole_cube_width)),
+            0
+        ]
+    ];
+
+    for (hole_position=hole_positions)
+        translate(hole_position) {
+	    for (pin_position=plastic_pin_locations) {
+    	        translate(pin_position) {
+                    difference() {
+                        cylinder(h=5, r=plastic_pin_radius+0.5, $fn=50);
+                        cylinder(h=5.1, r=plastic_pin_radius, $fn=50);
+        	    };
+                };
+            };
+	    translate(central_pin_location) {
+                difference() {
+                    cylinder(h=5, r=central_pin_radius+0.5, $fn=50);
+                    cylinder(h=5.1, r=central_pin_radius, $fn=50);
+                };
+            };
+        };
+};
+
+module key_holders_grid() {
+    translate([hole_distance, (-hole_cube_width), 0]) {
+        key_holders_row(1, 0, 0);
+        key_holders_row(2, 0, 0);
+        key_holders_row(3, 0, 0);
+    };
+};
+
+module bottom_lid_with_holders() {
+    union() {
+        bottom_lid_with_screw_holes();
+	key_holders_grid();
+    };
+};
+
+translate([0, 0, -20]) bottom_lid_with_holders();
 
 
 // keyboard top shell
@@ -196,8 +255,7 @@ module vertical_text() {
                 text("by Franciszek Adamski", size=3, font="AR PL UKai CN:style=Book");
             };
         };
-    };
-    
+    }; 
 };
 
 module keyboard_with_text() {
