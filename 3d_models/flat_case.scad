@@ -42,6 +42,8 @@ plastic_pin_radius = 0.9;
 central_pin_location = [7, 7, 0];
 central_pin_radius = 2.05;
 
+bottom_lid_height = 2;
+
 // keyboard part
 module holes_row(row, start, end) {
     hole_positions = [
@@ -169,7 +171,7 @@ module bottom_lid() {
         [
             keyboard_width+chip_shell_width,
             keyboard_depth+battery_shell_depth+2*hole_distance,
-            2
+            bottom_lid_height
         ]
     );
 };
@@ -195,15 +197,15 @@ module key_holders_row(row, start, end) {
 	    for (pin_position=plastic_pin_locations) {
     	        translate(pin_position) {
                     difference() {
-                        cylinder(h=8, r=plastic_pin_radius+0.5, $fn=50);
-                        cylinder(h=8.1, r=plastic_pin_radius, $fn=50);
+                        cylinder(h=bottom_lid_height+7.5, r=plastic_pin_radius+0.9, $fn=50);
+                        cylinder(h=bottom_lid_height+7.6, r=plastic_pin_radius, $fn=50);
         	    };
                 };
             };
 	    translate(central_pin_location) {
                 difference() {
-                    cylinder(h=8, r=central_pin_radius+0.5, $fn=50);
-                    cylinder(h=8.1, r=central_pin_radius, $fn=50);
+                    cylinder(h=bottom_lid_height+7.5, r=central_pin_radius+1, $fn=50);
+                    cylinder(h=bottom_lid_height+7.6, r=central_pin_radius, $fn=50);
                 };
             };
         };
@@ -217,10 +219,60 @@ module key_holders_grid() {
     };
 };
 
+module key_pins_row(row, start, end) {
+    hole_positions = [
+        for (x=[start:(number_of_columns-1-end)]) [
+            x*hole_cube_width + x*hole_distance,
+            (row * (hole_distance + hole_cube_width)),
+            0
+        ]
+    ];
+
+    for (hole_position=hole_positions)
+        translate(hole_position) {
+	    for (pin_position=metal_pin_locations) {
+    	        translate(pin_position) {
+                    difference() {
+                        difference() {
+                            cylinder(h=bottom_lid_height+7.5, r=metal_pin_radius+1, $fn=50);
+                            cylinder(h=bottom_lid_height+7.6, r=metal_pin_radius+0.2, $fn=50);
+        	        };
+                        translate([0, 0, 8]) {
+                            union() {
+                                rotate([90, 0, 0]) {
+                                    cylinder(h=bottom_lid_height+7.6, r=metal_pin_radius+0.2, $fn=50);
+                                };
+                                rotate([0, 90, 0]) {
+                                    cylinder(h=bottom_lid_height+7.6, r=metal_pin_radius+0.2, $fn=50);
+                                };
+                                rotate([-90, 0, 0]) {
+                                    cylinder(h=bottom_lid_height+7.6, r=metal_pin_radius+0.2, $fn=50);
+                                };
+                                rotate([0, -90, 0]) {
+                                    cylinder(h=bottom_lid_height+7.6, r=metal_pin_radius+0.2, $fn=50);
+                                };
+
+                            };
+                        };
+                    };
+                };
+            };
+        };
+};
+
+module key_pins_grid() {
+    translate([hole_distance, (-hole_cube_width), 0]) {
+        key_pins_row(1, 0, 0);
+        key_pins_row(2, 0, 0);
+        key_pins_row(3, 0, 0);
+    };
+};
+
 module bottom_lid_with_holders() {
     union() {
         bottom_lid_with_screw_holes();
 	key_holders_grid();
+        key_pins_grid();
     };
 };
 
@@ -241,7 +293,7 @@ module keyboard() {
 module top_text() {
     translate([hole_distance, keyboard_depth+hole_distance, keyboard_height-1]) {
         linear_extrude(2.1) {
-            text("岁月静好", size=12, font="AR PL UKai CN:style=Book");
+            text("OHK", size=12, font="Ubuntu Mono:style=Bold");
         };
     };
 };
@@ -250,12 +302,12 @@ module vertical_text() {
     rotate([90, 0, 180]) {
         translate([-keyboard_width-chip_shell_width+hole_distance, hole_distance-1, keyboard_depth+20]) {
             linear_extrude(2.1) {
-                text("OH Keyboard", size=7, font="AR PL UKai CN:style=Book");
+                text("OHK", size=7, font="Ubuntu Mono:style=Bold");
             };
         };
         translate([-keyboard_width+32, hole_distance-2, keyboard_depth+20]) {
             linear_extrude(2.1) {
-                text("by Franciszek Adamski", size=3, font="AR PL UKai CN:style=Book");
+                text("", size=3, font="Ubuntu Mono:style=Bold");
             };
         };
     }; 
@@ -274,4 +326,3 @@ translate([0, 0, 0]) {
     keyboard_with_text();
 };
 
-// vertical_text();
