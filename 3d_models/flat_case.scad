@@ -192,15 +192,15 @@ module key_holders_row(row, start, end) {
 	    for (pin_position=plastic_pin_locations) {
     	        translate(pin_position) {
                     difference() {
-                        cylinder(h=5, r=plastic_pin_radius+0.5, $fn=50);
-                        cylinder(h=5.1, r=plastic_pin_radius, $fn=50);
+                        cylinder(h=8, r=plastic_pin_radius+0.5, $fn=50);
+                        cylinder(h=8.1, r=plastic_pin_radius, $fn=50);
         	    };
                 };
             };
 	    translate(central_pin_location) {
                 difference() {
-                    cylinder(h=5, r=central_pin_radius+0.5, $fn=50);
-                    cylinder(h=5.1, r=central_pin_radius, $fn=50);
+                    cylinder(h=8, r=central_pin_radius+0.5, $fn=50);
+                    cylinder(h=8.1, r=central_pin_radius, $fn=50);
                 };
             };
         };
