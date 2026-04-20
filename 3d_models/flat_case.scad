@@ -1,5 +1,5 @@
 hole_cube_width = 14;
-hole_distance = 3;
+hole_distance = 4;
 
 number_of_rows = 3;
 number_of_columns = 5;
@@ -10,11 +10,11 @@ keyboard_height = 13;
 
 chip_width = 23;
 chip_depth = 51;
-chip_shell_width = chip_width - hole_distance;
-chip_shell_depth = chip_depth + hole_distance;
+chip_shell_width = chip_width + hole_distance;
+chip_shell_depth = chip_depth + 2*hole_distance;
 chip_shell_height = keyboard_height;
 
-battery_shell_depth = keyboard_height;
+battery_shell_depth = 14;
 
 screw_hole_radius = 1.2;
 nut_hole_radius = 2.3;
@@ -80,7 +80,7 @@ module body_mesh_cutout() {
 module keyboard_shell() {
     difference() {
         body_mesh_cutout();
-        translate([hole_distance, hole_distance, -1]) cube([keyboard_width-(2*hole_distance), keyboard_depth-(1*hole_distance), keyboard_height-1]);
+        translate([hole_distance, hole_distance, -2]) cube([keyboard_width-(2*hole_distance), keyboard_depth-(1*hole_distance), keyboard_height]);
     }
 };
 
@@ -93,7 +93,7 @@ module chip_body_mesh() {
 };
 
 module main_keyboard_shell_hole() {
-    translate([keyboard_width-(2*hole_distance), hole_distance, -1]) cube([chip_width, chip_depth, 2*chip_shell_height]);    
+    translate([keyboard_width, hole_distance+3, -1]) cube([chip_width, chip_depth, 2*chip_shell_height]);    
 };
 
 module chip_shell() {
@@ -245,12 +245,12 @@ module top_text() {
 
 module vertical_text() {
     rotate([90, 0, 180]) {
-        translate([-keyboard_width-chip_shell_width+hole_distance, hole_distance, keyboard_depth+17]) {
+        translate([-keyboard_width-chip_shell_width+hole_distance, hole_distance-1, keyboard_depth+20]) {
             linear_extrude(2.1) {
                 text("OH Keyboard", size=7, font="AR PL UKai CN:style=Book");
             };
         };
-        translate([-keyboard_width+37, hole_distance, keyboard_depth+17]) {
+        translate([-keyboard_width+32, hole_distance-2, keyboard_depth+20]) {
             linear_extrude(2.1) {
                 text("by Franciszek Adamski", size=3, font="AR PL UKai CN:style=Book");
             };
@@ -271,4 +271,4 @@ translate([0, 0, 0]) {
     keyboard_with_text();
 };
 
-vertical_text();
+// vertical_text();
