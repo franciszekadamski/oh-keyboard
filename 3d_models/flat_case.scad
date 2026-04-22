@@ -8,7 +8,7 @@ keyboard_width = hole_distance + (hole_cube_width + hole_distance)*number_of_col
 keyboard_depth = hole_distance + (hole_cube_width + hole_distance)*number_of_rows;
 keyboard_height = 13;
 
-chip_width = 23;
+chip_width = 21;
 chip_depth = 51;
 chip_shell_width = chip_width + hole_distance;
 chip_shell_depth = chip_depth + 2*hole_distance;
@@ -43,6 +43,34 @@ central_pin_location = [7, 7, 0];
 central_pin_radius = 2.05;
 
 bottom_lid_height = 2;
+
+chip_pin_socket_mesh_depth = 2.2+((2.54-2.2)/2)+0.05; //0.05 to overlap
+chip_pin_socket_mesh_width = 7;
+chip_pin_socket_mesh_height = 4; // 6 mm long pins below the board holder
+chip_pin_socket_hole_radius = 0.5+0.3;
+chip_pin_socket_pitch = 2.54;
+
+pin_socket_number_of_pins_in_a_row = 20;
+first_pin_socket_pin_depth = ((2.54-2.2)/2)+hole_distance+1.15;
+first_pin_socket_pin_width = keyboard_width+1.61;
+second_pin_socket_pin_depth = first_pin_socket_pin_depth; //+17.78;
+second_pin_socket_pin_width = keyboard_width+1.61+17.78;
+
+first_row_pin_socket_pin_center_locations = [
+    for (x=[0:pin_socket_number_of_pins_in_a_row-1]) [
+        first_pin_socket_pin_width,
+        first_pin_socket_pin_depth + x*chip_pin_socket_pitch,
+        0 // keyboard_height-chip_pin_socket_mesh_height
+    ]
+];
+
+second_row_pin_socket_pin_center_locations = [
+    for (x=[0:pin_socket_number_of_pins_in_a_row-1]) [
+        second_pin_socket_pin_width,
+        second_pin_socket_pin_depth + x*chip_pin_socket_pitch,
+        0 // keyboard_height-chip_pin_socket_mesh_height
+    ]
+];
 
 // keyboard part
 module holes_row(row, start, end) {
@@ -95,7 +123,7 @@ module chip_body_mesh() {
 };
 
 module main_keyboard_shell_hole() {
-    translate([keyboard_width, hole_distance+3, -1]) cube([chip_width, chip_depth, 2*chip_shell_height]);    
+    translate([keyboard_width, hole_distance, -1]) cube([chip_width, chip_depth, 2*chip_shell_height]);    
 };
 
 module chip_shell() {
@@ -146,6 +174,26 @@ module chip_keyboard_and_battery_shell() {
 };
 
 // gpio socket
+module gpio_pin_socket() {
+    for (location=first_row_pin_socket_pin_center_locations) {
+        translate(location) {
+            difference() {
+                cylinder(h=keyboard_height, r=chip_pin_socket_hole_radius+0.7, $fn=50);
+                cylinder(h=keyboard_height+0.1, r=chip_pin_socket_hole_radius, $fn=50);
+            };
+        };
+    };
+    for (location=second_row_pin_socket_pin_center_locations) {
+        translate(location) {
+            difference() {
+                cylinder(h=keyboard_height, r=chip_pin_socket_hole_radius+0.7, $fn=50);
+                cylinder(h=keyboard_height+0.1, r=chip_pin_socket_hole_radius, $fn=50);
+            };
+        };
+    };
+};
+gpio_pin_socket();
+
 // screw holes
 module screw_holes() {
     for (screw_center=screw_center_locations) {
@@ -276,7 +324,7 @@ module bottom_lid_with_holders() {
     };
 };
 
-translate([0, 0, -20]) bottom_lid_with_holders();
+translate([0, 0, -2]) bottom_lid_with_holders();
 
 
 // keyboard top shell
