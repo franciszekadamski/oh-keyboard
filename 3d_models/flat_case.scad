@@ -51,7 +51,7 @@ chip_pin_socket_hole_radius = 0.5+0.3;
 chip_pin_socket_pitch = 2.54;
 
 pin_socket_number_of_pins_in_a_row = 20;
-first_pin_socket_pin_depth = ((2.54-2.2)/2)+hole_distance+1.15;
+first_pin_socket_pin_depth = ((2.54-2.2)/2)+hole_distance+1.15+7;
 first_pin_socket_pin_width = keyboard_width+1.61;
 second_pin_socket_pin_depth = first_pin_socket_pin_depth; //+17.78;
 second_pin_socket_pin_width = keyboard_width+1.61+17.78;
@@ -71,6 +71,10 @@ second_row_pin_socket_pin_center_locations = [
         0 // keyboard_height-chip_pin_socket_mesh_height
     ]
 ];
+
+pin_socket_canal_first_location_height = keyboard_height*0.15;
+pin_socket_canal_second_location_height = keyboard_height*0.4;
+pin_socket_canal_third_location_height = keyboard_height*0.85;
 
 // keyboard part
 module holes_row(row, start, end) {
@@ -123,7 +127,7 @@ module chip_body_mesh() {
 };
 
 module main_keyboard_shell_hole() {
-    translate([keyboard_width, hole_distance, -1]) cube([chip_width, chip_depth, 2*chip_shell_height]);    
+    translate([keyboard_width, hole_distance+7.001, -1]) cube([chip_width, chip_depth, 2*chip_shell_height]);    
 };
 
 module chip_shell() {
@@ -179,7 +183,24 @@ module gpio_pin_socket() {
         translate(location) {
             difference() {
                 cylinder(h=keyboard_height, r=chip_pin_socket_hole_radius+0.7, $fn=50);
-                cylinder(h=keyboard_height+0.1, r=chip_pin_socket_hole_radius, $fn=50);
+                union() {
+                    cylinder(h=keyboard_height+0.1, r=chip_pin_socket_hole_radius, $fn=50);
+                    translate([2, 0, pin_socket_canal_first_location_height]) {
+                        rotate([0, -90, 0]) {
+                            cylinder(h=5, r=chip_pin_socket_hole_radius, $fn=50);
+                        };
+                    };
+                    translate([2, 0, pin_socket_canal_second_location_height]) {
+                        rotate([0, -90, 0]) {
+                            cylinder(h=5, r=chip_pin_socket_hole_radius, $fn=50);
+                        };
+                    };
+                    translate([2, 0, pin_socket_canal_third_location_height]) {
+                        rotate([0, -90, 0]) {
+                            cylinder(h=5, r=chip_pin_socket_hole_radius, $fn=50);
+                        };
+                    };
+                };
             };
         };
     };
@@ -187,7 +208,24 @@ module gpio_pin_socket() {
         translate(location) {
             difference() {
                 cylinder(h=keyboard_height, r=chip_pin_socket_hole_radius+0.7, $fn=50);
-                cylinder(h=keyboard_height+0.1, r=chip_pin_socket_hole_radius, $fn=50);
+                union() {
+                    cylinder(h=keyboard_height+0.1, r=chip_pin_socket_hole_radius, $fn=50);
+                    translate([2, 0, pin_socket_canal_first_location_height]) {
+                        rotate([0, -90, 0]) {
+                            cylinder(h=5, r=chip_pin_socket_hole_radius, $fn=50);
+                        };
+                    };
+                    translate([2, 0, pin_socket_canal_second_location_height]) {
+                        rotate([0, -90, 0]) {
+                            cylinder(h=5, r=chip_pin_socket_hole_radius, $fn=50);
+                        };
+                    };
+                    translate([2, 0, pin_socket_canal_third_location_height]) {
+                        rotate([0, -90, 0]) {
+                            cylinder(h=5, r=chip_pin_socket_hole_radius, $fn=50);
+                        };
+                    };
+                };
             };
         };
     };
