@@ -506,4 +506,28 @@ module all_flat() {
     translate([0, 0, 0]) bottom_lid_with_holders();    
 };
 
-all_flat();
+// all_flat();
+
+module only_bottom_lid() {
+    translate([-keyboard_width/2, -keyboard_depth/2, 0]) {
+        bottom_lid_with_holders();
+    };
+};
+
+module only_cover_case() {
+    translate([keyboard_width/2, -keyboard_depth/2, 2*cover_case_lift+2+9]) {
+        rotate([0, 180, 0]) {
+            cover_case();
+        };
+    };
+};
+
+module only_keyboard_case() {
+    translate([-keyboard_width/2, keyboard_depth/2, keyboard_height+2]) {
+        rotate([180, 0, 0]) {
+            keyboard_with_case_tracks();
+        };
+    };    
+};
+
+only_keyboard_case();
