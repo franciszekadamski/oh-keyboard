@@ -76,8 +76,9 @@ pin_socket_canal_first_location_height = keyboard_height*0.15;
 pin_socket_canal_second_location_height = keyboard_height*0.4;
 pin_socket_canal_third_location_height = keyboard_height*0.85;
 
-cover_case_height = keyboard_height;
 cover_case_lift = 6;
+cover_case_height = keyboard_height + cover_case_lift;
+
 
 // keyboard part
 module holes_row(row, start, end) {
@@ -381,7 +382,7 @@ module keyboard() {
 module top_text() {
     translate([hole_distance, keyboard_depth+hole_distance, keyboard_height-1]) {
         linear_extrude(2.1) {
-            text("OHK", size=12, font="Ubuntu Mono:style=Bold");
+            text("", size=12, font="Ubuntu Mono:style=Bold");
         };
     };
 };
@@ -390,7 +391,7 @@ module vertical_text() {
     rotate([90, 0, 180]) {
         translate([-keyboard_width-chip_shell_width+hole_distance, hole_distance-1, keyboard_depth+20]) {
             linear_extrude(2.1) {
-                text("OHK", size=7, font="Ubuntu Mono:style=Bold");
+                text("Frank's Chorded Keyboard", size=6, font="Ubuntu Mono:style=Bold");
             };
         };
         translate([-keyboard_width+32, hole_distance-2, keyboard_depth+20]) {
@@ -446,10 +447,21 @@ module cover_case_hole() {
     };
 };
 
+module cover_case_text() {
+    translate([keyboard_width*0.1, keyboard_depth, keyboard_height+cover_case_lift+3]) {
+        linear_extrude(2.1) {
+            text("FCK", size=12, font="Ubuntu Mono:style=Bold");
+        };
+    };
+};
+
 module cover_case() {
     difference() {
         cover_case_mesh();
-        cover_case_hole();
+        union() {
+            cover_case_hole();
+            cover_case_text();
+        };
     };
 };
 
@@ -479,7 +491,7 @@ module all() {
 };
 
 module all_flat() {
-    translate([-2, 0, cover_case_lift+2+9]) {
+    translate([-2, 0, 2*cover_case_lift+2+9]) {
         rotate([0, 180, 0]) {
             cover_case();
         };
