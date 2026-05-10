@@ -1,6 +1,6 @@
 hole_cube_width = 14;
 hole_distance = 4;
-cylinder_fn = 6;
+cylinder_fn = 50;
 
 number_of_rows = 3;
 number_of_columns = 5;
