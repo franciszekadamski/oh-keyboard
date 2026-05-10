@@ -96,11 +96,11 @@ module case() {
             cube([keyboard_width+4, keyboard_depth+2, 22]);
         };
         union() {
-            translate([0, 0, 2]) {
-                cube([keyboard_width, keyboard_depth, 10.5]);
+            translate([-0.3, 0, 2]) {
+                cube([keyboard_width+0.6, keyboard_depth+0.5, 10.5]);
             };
-            translate([0.3, 0, 11]) {
-                cube([keyboard_width-0.6, keyboard_depth-1, 9.5]);
+            translate([0.6, 0, 11]) {
+                cube([keyboard_width-1.2, keyboard_depth+0.5, 9.5]);
             };
         }
     };
