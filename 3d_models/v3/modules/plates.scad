@@ -116,7 +116,7 @@ module cover_plate() {
 module case() {
     difference() {
         translate([-2, 2, 0]) {
-            cube([keyboard_width+4, keyboard_depth+5, 38]);
+            cube([keyboard_width+4, keyboard_depth+5+5, 38]);
         };
         union() {
             translate([-0.3, 0, 2]) {
@@ -125,6 +125,13 @@ module case() {
             translate([0.6, 0, 15]) {
                 cube([keyboard_width-1.2, keyboard_depth+3.5, 21]);
             };
+            translate([0, 4, 1]) {
+                cube([keyboard_width+5, 3, 15.5+21-0.5]);
+            };
         }
     };
+};
+
+module case_cover() {
+    cube([keyboard_width+5, 15.5+21-1.2, 2]);
 };

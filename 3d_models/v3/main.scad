@@ -22,11 +22,15 @@ module_height = bottom_plate_height + top_plate_height;
 // bottom_plate();
 
 
-translate([-0.5*keyboard_width, 0, keyboard_depth+7]) {
+translate([-0.5*keyboard_width, 0, keyboard_depth+7+5]) {
     rotate([-90, 0, 0]) {
         case();
     };
 };
+
+translate([-0.5*keyboard_width-2, -keyboard_depth/2-6, 0]) case_cover();
+
+// case();
 
 // translate([-keyboard_width-1, -2, 15]) {
 // 		rotate([180, 0, 0]) {
